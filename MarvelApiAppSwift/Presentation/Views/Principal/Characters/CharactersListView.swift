@@ -11,9 +11,32 @@ struct CharactersListView: View {
     
     @State var viewModel: MarvelViewModel
     
+    // Transition to HerosDetail
+    @Namespace
+    private var nameSpace
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
-    }
+        // Heroes List
+        NavigationStack {
+            List {
+                ForEach(viewModel.heroesData) { hero in
+                    NavigationLink {
+                        // Destination
+                        SeriesListView()
+                        // Transition
+                            .navigationTransition(.zoom(sourceID: hero.id, in: nameSpace))
+                    } label: {
+                        // Heroes row
+                        CharactersRowView()
+                    }
+                    // NavigationLink
+                } // ForEach
+                
+            } // List
+            .navigationTitle("Marvel Heroes")
+        } // NavStack
+        
+    } // Body
 }
 
 #Preview {

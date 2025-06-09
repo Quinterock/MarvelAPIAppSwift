@@ -22,7 +22,7 @@ struct MarvelData: Codable {
 }
 
 // MARK: - Result
-struct Result: Codable {
+struct Result: Codable, Identifiable {
     let id: Int
     let name, description: String
     let modified: Date
