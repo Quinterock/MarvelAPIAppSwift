@@ -8,11 +8,14 @@
 import SwiftUI
 
 struct CharactersListView: View {
+    
+    @State var viewModel: MarvelViewModel
+    
     var body: some View {
         Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
     }
 }
 
 #Preview {
-    CharactersListView()
+    CharactersListView(viewModel: MarvelViewModel(useCaseMarvel: MarvelUseCaseMock()))
 }
