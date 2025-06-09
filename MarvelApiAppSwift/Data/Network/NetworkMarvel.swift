@@ -94,3 +94,7 @@ final class NetworkMarvel: NetworkMarvelProtocol {
         return series
     }
 }
+
+
+// Mock Class
+// TODO: Mock NetworkMarvel
