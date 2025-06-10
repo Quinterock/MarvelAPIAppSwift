@@ -18,19 +18,17 @@ struct CharactersListView: View {
     var body: some View {
         // Heroes List
         NavigationStack {
-            List {
-                ForEach(viewModel.heroesData) { hero in
+            List(viewModel.heroesData) { hero in
                     NavigationLink {
                         // Destination
-                        SeriesListView()
+                        SeriesListView(hero: hero, vmMarvel: viewModel)
                         // Transition
                             .navigationTransition(.zoom(sourceID: hero.id, in: nameSpace))
                     } label: {
                         // Heroes row
-                        CharactersRowView()
+                        CharactersRowView(hero: hero)
                     }
                     // NavigationLink
-                } // ForEach
                 
             } // List
             .navigationTitle("Marvel Heroes")

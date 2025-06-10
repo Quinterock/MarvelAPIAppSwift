@@ -12,5 +12,6 @@ enum Endpoints: String {
     case heroes = "/v1/public/characters"
     
     // Marvel Heroe´s / Character´s Series
-    case series = "/v1/public/series" 
+    // TODO: Quitar solo con characterxs sirver
+    case series = "/v1/public/series"
 }

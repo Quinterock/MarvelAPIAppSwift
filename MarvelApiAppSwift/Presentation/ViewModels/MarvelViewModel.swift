@@ -30,6 +30,12 @@ final class MarvelViewModel {
         self.heroesData = data
     }
     
+    @MainActor
+    func getSeries() async {
+        let data = await useCaseMarvel.getSeries()
+        self.heroesData = data
+    }
+    
     
     
 } // final class

@@ -22,6 +22,7 @@ struct MarvelData: Codable {
 }
 
 // MARK: - Result
+// TODO: Result camiar nombre
 struct Result: Codable, Identifiable {
     let id: Int
     let name, description: String

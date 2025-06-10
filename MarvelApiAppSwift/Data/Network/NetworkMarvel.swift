@@ -11,6 +11,8 @@ protocol NetworkMarvelProtocol {
     // When we access to characters or series from the API, we work with the MarvelModel.data.results lists of type [Result]
     // Every [Result] as return type is a characetr with its details (id, name desc ..... series)
     
+    // TODO: Solo con characters vale, ver postman
+    
     // Get Marvel Characters
     func getCharacters() async -> [Result]
     
@@ -44,6 +46,7 @@ final class NetworkMarvel: NetworkMarvelProtocol {
             if let resp = response as? HTTPURLResponse {
                 if resp.statusCode == HttpResponseCodes.success {
                     // Decode Marvel Model
+                    // TODO: cHECAR SI ES MarvelModel
                     let decodeResponse = try JSONDecoder().decode(MarvelModel.self, from: data)
                     // Return the data
                     characters = decodeResponse.data.results
@@ -132,7 +135,7 @@ final class NetworkMarvelMock: NetworkMarvelProtocol {
         
         return [character1, character2]
     }
-    
+    // TODO: Checar y ver si quitar
     func getSeries() async -> [Result] {
         
         // Mock Series for Spiderman
