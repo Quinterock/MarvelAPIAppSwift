@@ -10,7 +10,7 @@ protocol MarvelRepositoryProtocol {
     // Every [Result] as return type is a characetr with its details (id, name desc ..... series)
     
     // Get Marvel Characters
-    func getCharacters() async -> [Result]
+    func getCharacters() async -> [MarvelCharacterResult]
     // Get Marvel Series
-    func getSeries() async -> [Result]
+    func getSeries(for characterId: Int) async -> [MarvelSeriesItem]
 }

@@ -14,30 +14,29 @@ final class MarvelRepository: MarvelRepositoryProtocol {
         self.networkMarvel = networkMarvel
     }
     
-    func getCharacters() async -> [Result] {
+    func getCharacters() async -> [MarvelCharacterResult] {
         await networkMarvel.getCharacters()
     }
     
-    func getSeries() async -> [Result] {
-        await networkMarvel.getSeries()
+    func getSeries(for characterId: Int) async -> [MarvelSeriesItem] {
+        await networkMarvel.getSeries(for: characterId)
     }
 }
 
 // Mock
 
 final class MarvelRepositoryMock: MarvelRepositoryProtocol {
-    
     private var network: NetworkMarvelProtocol
     
     init(network: NetworkMarvelProtocol = NetworkMarvelMock()) {
         self.network = network
     }
     
-    func getCharacters() async -> [Result] {
+    func getCharacters() async -> [MarvelCharacterResult] {
         return await network.getCharacters()
     }
     
-    func getSeries() async -> [Result] {
-        return await network.getSeries()
+    func getSeries(for characterId: Int) async -> [MarvelSeriesItem] {
+        return await network.getSeries(for: characterId)
     }
 }

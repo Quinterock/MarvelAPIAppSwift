@@ -10,9 +10,9 @@ import Foundation
 protocol MarvelUseCaseProtocol {
     var repo: MarvelRepositoryProtocol { get set }
     
-    func getCharacters() async -> [Result]
+    func getCharacters() async -> [MarvelCharacterResult]
     
-    func getSeries() async -> [Result]
+    func getSeries(for characterId: Int) async -> [MarvelSeriesItem]
 }
 
 final class MarvelUseCase: MarvelUseCaseProtocol {
@@ -22,12 +22,12 @@ final class MarvelUseCase: MarvelUseCaseProtocol {
         self.repo = repo
     }
     
-    func getCharacters() async -> [Result] {
+    func getCharacters() async -> [MarvelCharacterResult] {
         return await repo.getCharacters()
     }
     
-    func getSeries() async -> [Result] {
-        return await repo.getSeries()
+    func getSeries(for characterId: Int) async -> [MarvelSeriesItem] {
+        return await repo.getSeries(for: characterId)
     }
 }
 
@@ -40,11 +40,11 @@ final class MarvelUseCaseMock: MarvelUseCaseProtocol {
         self.repo = repo
     }
     
-    func getCharacters() async -> [Result] {
+    func getCharacters() async -> [MarvelCharacterResult] {
         return await repo.getCharacters()
     }
     
-    func getSeries() async -> [Result] {
-        return await repo.getSeries()
+    func getSeries(for characterId: Int) async -> [MarvelSeriesItem] {
+        return await repo.getSeries(for: characterId)
     }
 }
