@@ -8,7 +8,6 @@
 import SwiftUI
 // PRINCIPAL FIRST VIEW
 struct PrincipalView: View {
-    var vmMarvel: MarvelViewModel
     
     var body: some View {
         VStack {
@@ -16,12 +15,11 @@ struct PrincipalView: View {
                 .imageScale(.large)
                 .foregroundStyle(.tint)
             Text("Hello, world!")
-            CharactersListView(viewModel: vmMarvel)
         }
         .padding()
     }
 }
 
 #Preview {
-    PrincipalView(vmMarvel: MarvelViewModel())
+    PrincipalView()
 }

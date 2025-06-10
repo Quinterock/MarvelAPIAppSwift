@@ -8,54 +8,71 @@
 import SwiftUI
 
 struct CharactersRowView: View {
-    let hero: Result
-    
+    let character: MarvelCharacterResult
     
     var body: some View {
-        HStack {
-            AsyncImage(url: URL(string: "\(hero.thumbnail.path).\(hero.thumbnail.thumbnailExtension.rawValue)")) { phase in
-                            switch phase {
-                            case .empty:
-                                ProgressView()
-                                    .frame(width: 40, height: 40)
-                            case .success(let image):
-                                image
-                                    .resizable()
-                                    .scaledToFit()
-                                    .frame(width: 40, height: 40)
-                                    .clipShape(Circle())
-                            case .failure:
-                                Image(systemName: "person")
-                                    .resizable()
-                                    .scaledToFit()
-                                    .frame(width: 40, height: 40)
-                            @unknown default:
-                                EmptyView()
-                }
-            }
-            
-            // Hero name
-            Text(hero.name)
+        VStack {
+            AsyncImage(url: character.thumbnailURL) { phase in
+                switch phase {
+                case .empty:
+                    ProgressView()
+                        .frame(width: 100, height: 100)
+                case .success(let image):
+                    image
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 320, height: 320)
+                        .clipShape(RoundedRectangle(cornerRadius: 12))
+                case .failure(let _):
+                    Image(systemName: "person")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 100, height: 100)
+                        .foregroundStyle(.red)
+                @unknown default:
+                    Image(systemName: "person.crop.square")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 100, height: 100)
+                        .foregroundColor(.gray)
+                } // switch
+            } // AsyncImage
+            Text(character.name)
                 .font(.headline)
-            
-        } // HStack
-        .padding(.vertical, 8)
+                .frame(width: 100)
+        } // VStack
+        .padding()
+        .background(Color(.systemBackground))
+        .cornerRadius(24)
+        .shadow(radius: 8)
     } // View
+    
 }
 
-#Preview {
+// Extension to get the image URL, (shorten code)
+extension MarvelCharacterResult {
+    static let mock: MarvelCharacterResult = MarvelCharacterResult(
+            id: 1,
+            name: "Spider-Man",
+            description: "Friendly neighborhood Spider-Man.",
+            modified: Date(),
+            thumbnail: MarvelThumbnail(
+                path: "https://i.annihil.us/u/prod/marvel/i/mg/3/20/5232158de5b16",
+                thumbnailExtension: .jpg
+            ),
+            series: MarvelSeries(
+                available: 3,
+                collectionURI: "",
+                items: [],
+                returned: 3
+            )
+        )
     
-    let mockThumbnail = Thumbnail(path: "https://preview.redd.it/ironman-drawn-by-me-using-colored-pencils-v0-hvhlbmna6vid1.jpeg?width=640&crop=smart&auto=webp&s=c20ec9f9d9437c887294549504edcd312e9e5fb8",thumbnailExtension: .jpg)
-        let mockHero = Result(id: 1011334,
-                               name: "Iron man",
-                               description: "Test description",
-                               modified: Date(),
-                               thumbnail: mockThumbnail,
-                               resourceURI: "",
-                               comics: Comics(available: 0, collectionURI: "", items: [], returned: 0),
-                               series: Comics(available: 0, collectionURI: "", items: [], returned: 0),
-                               stories: Stories(available: 0, collectionURI: "", items: [], returned: 0),
-                               events: Comics(available: 0, collectionURI: "", items: [], returned: 0),
-                               urls: [])
-    CharactersRowView(hero: mockHero)
+    var thumbnailURL: URL? {
+        URL(string: "\(thumbnail.path).\(thumbnail.thumbnailExtension)")
+    }
+}
+    
+#Preview {
+    CharactersRowView(character: .mock)
 }

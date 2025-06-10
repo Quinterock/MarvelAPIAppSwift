@@ -5,7 +5,6 @@
 //  Created by Luis Quintero on 07/06/25.
 //
 
-
 import Foundation
 
 struct Characters: Codable {

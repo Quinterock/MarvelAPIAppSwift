@@ -305,4 +305,4 @@ final class NetworkMarvelMock: NetworkMarvelProtocol {
 //                // Para el mock, simplemente devolvemos todas las series, aunque en la realidad filtrarías según el personaje
 //                return [spidermanSeries1, spidermanSeries2, ironmanSeries1, ironmanSeries2]
 //    }
-}
+//}
