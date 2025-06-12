@@ -8,7 +8,7 @@
 import Foundation
 
 @MainActor
-final class MavelViewModel: ObservableObject {
+final class MarvelViewModel: ObservableObject {
     // MARK: Public properties
     // Heroes list from Model
     @Published var characters: [MarvelCharacterResult] = []

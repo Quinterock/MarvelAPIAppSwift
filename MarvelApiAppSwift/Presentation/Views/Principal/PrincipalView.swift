@@ -8,15 +8,10 @@
 import SwiftUI
 // PRINCIPAL FIRST VIEW
 struct PrincipalView: View {
-    
+    @StateObject private var viewModel = MarvelViewModel() // Use real or mock here
+
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
-        }
-        .padding()
+        CharactersListView(viewModel: viewModel)
     }
 }
 

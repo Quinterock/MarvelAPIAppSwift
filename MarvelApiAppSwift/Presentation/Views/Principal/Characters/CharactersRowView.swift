@@ -49,6 +49,9 @@ struct CharactersRowView: View {
     
 }
 
+
+
+
 // Extension to get the image URL, (shorten code)
 extension MarvelCharacterResult {
     static let mock: MarvelCharacterResult = MarvelCharacterResult(

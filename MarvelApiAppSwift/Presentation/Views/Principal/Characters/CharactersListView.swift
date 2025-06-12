@@ -5,38 +5,52 @@
 //  Created by Luis Quintero on 09/06/25.
 //
 
-//import SwiftUI
-//
-//struct CharactersListView: View {
-//    
-//    @State var viewModel: MarvelViewModel
-//    
-//    // Transition to HerosDetail
-//    @Namespace
-//    private var nameSpace
-//    
-//    var body: some View {
-//        // Heroes List
-//        NavigationStack {
-//            List(viewModel.heroesData) { hero in
-//                    NavigationLink {
-//                        // Destination
-//                        SeriesListView(hero: hero, vmMarvel: viewModel)
-//                        // Transition
-//                            .navigationTransition(.zoom(sourceID: hero.id, in: nameSpace))
-//                    } label: {
-//                        // Heroes row
-//                        CharactersRowView(hero: hero)
-//                    }
-//                    // NavigationLink
-//                
-//            } // List
-//            .navigationTitle("Marvel Heroes")
-//        } // NavStack
-//        
-//    } // Body
-//}
-//
-//#Preview {
-//    CharactersListView(viewModel: MarvelViewModel(useCaseMarvel: MarvelUseCaseMock()))
-//}
+import SwiftUI
+
+struct CharactersListView: View {
+    @ObservedObject var viewModel: MarvelViewModel
+
+    var body: some View {
+        NavigationView {
+            Group {
+                if viewModel.isLoadingCharacters {
+                    ProgressView("Loading characters...")
+                        .frame(maxWidth: .infinity, maxHeight: .infinity)
+                } else if let error = viewModel.errorCharacters {
+                    VStack(spacing: 16) {
+                        Text("Error: \(error)")
+                            .foregroundColor(.red)
+                        Button("Retry") {
+                            Task { await viewModel.fetchCharacters() }
+                        }
+                    }
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                } else {
+                    ScrollView {
+                        LazyVStack(spacing: 16) {
+                            ForEach(viewModel.characters) { character in
+                                CharactersRowView(character: character)
+                                    .onTapGesture {
+                                        viewModel.selectCharacter(character)
+                                    }
+                            }
+                        }
+                        .padding()
+                    }
+                }
+            }
+            .navigationTitle("Marvel Characters")
+        }
+        .task {
+            if viewModel.characters.isEmpty {
+                await viewModel.fetchCharacters()
+            }
+        }
+    }
+}
+
+#Preview {
+    CharactersListView(
+        viewModel: MarvelViewModel(useCase: MarvelUseCaseMock())
+    )
+}

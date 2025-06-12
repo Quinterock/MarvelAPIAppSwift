@@ -31,7 +31,7 @@ final class MarvelUseCase: MarvelUseCaseProtocol {
     }
 }
 
-// TODO: Mock MarvelUseCaseMock
+// MarvelUseCaseMock
 
 final class MarvelUseCaseMock: MarvelUseCaseProtocol {
     var repo: any MarvelRepositoryProtocol
