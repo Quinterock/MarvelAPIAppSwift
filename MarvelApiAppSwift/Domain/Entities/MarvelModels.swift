@@ -16,7 +16,7 @@ struct CharactersData: Codable {
 }
 
 // Character (avoid using "Result" as it collides with Swift's built-in type!)
-struct MarvelCharacterResult: Codable, Identifiable {
+struct MarvelCharacterResult: Codable, Identifiable, Hashable {
     let id: Int
     let name: String
     let description: String
@@ -26,7 +26,7 @@ struct MarvelCharacterResult: Codable, Identifiable {
 }
 
 // Thumbnail
-struct MarvelThumbnail: Codable {
+struct MarvelThumbnail: Codable, Equatable, Hashable {
     let path: String
     // dont write only extension as it collides with Swift's built-in type
     let thumbnailExtension: Extension
@@ -44,7 +44,7 @@ enum Extension: String, Codable {
 }
 
 // Series summary
-struct MarvelSeries: Codable {
+struct MarvelSeries: Codable, Equatable, Hashable {
     let available: Int
     // Uniform Resource Identifier
     let collectionURI: String
@@ -52,12 +52,29 @@ struct MarvelSeries: Codable {
     let returned: Int
 }
 
-struct MarvelSeriesItem: Codable {
+struct MarvelSeriesItem: Codable, Equatable, Hashable {
     let resourceURI: String
     let name: String
 }
 
+// Full series Model
 
+struct SeriesResponse: Codable {
+    let data: SeriesData
+}
+
+struct SeriesData: Codable {
+    let results: [MarvelFullSeries]
+}
+
+struct MarvelFullSeries: Codable, Identifiable {
+    let id: Int
+    let title: String
+    let description: String?
+    let startYear: Int
+    let endYear: Int
+    let thumbnail: MarvelThumbnail
+}
 
 //import Foundation
 //

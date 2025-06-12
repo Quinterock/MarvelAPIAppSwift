@@ -8,6 +8,7 @@
 import Foundation
 
 final class MarvelRepository: MarvelRepositoryProtocol {
+    
     private let networkMarvel: NetworkMarvelProtocol
     
     init(networkMarvel: NetworkMarvelProtocol = NetworkMarvel()) {
@@ -18,8 +19,8 @@ final class MarvelRepository: MarvelRepositoryProtocol {
         await networkMarvel.getCharacters()
     }
     
-    func getSeries(for characterId: Int) async -> [MarvelSeriesItem] {
-        await networkMarvel.getSeries(for: characterId)
+    func getFullSeries(for characterId: Int) async -> [MarvelFullSeries] {
+        await networkMarvel.getFullSeries(for: characterId)
     }
 }
 
@@ -36,7 +37,8 @@ final class MarvelRepositoryMock: MarvelRepositoryProtocol {
         return await network.getCharacters()
     }
     
-    func getSeries(for characterId: Int) async -> [MarvelSeriesItem] {
-        return await network.getSeries(for: characterId)
+    func getFullSeries(for characterId: Int) async -> [MarvelFullSeries] {
+        return await network.getFullSeries(for: characterId)
     }
+
 }

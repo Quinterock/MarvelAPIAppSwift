@@ -9,5 +9,5 @@ protocol MarvelRepositoryProtocol {
     // Get Marvel Characters
     func getCharacters() async -> [MarvelCharacterResult]
     // Get Marvel Series
-    func getSeries(for characterId: Int) async -> [MarvelSeriesItem]
+    func getFullSeries(for characterId: Int) async -> [MarvelFullSeries]
 }

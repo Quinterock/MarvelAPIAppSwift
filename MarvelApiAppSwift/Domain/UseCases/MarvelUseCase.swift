@@ -12,39 +12,41 @@ protocol MarvelUseCaseProtocol {
     
     func getCharacters() async -> [MarvelCharacterResult]
     
-    func getSeries(for characterId: Int) async -> [MarvelSeriesItem]
+    func getFullSeries(for characterId: Int) async -> [MarvelFullSeries]
 }
 
 final class MarvelUseCase: MarvelUseCaseProtocol {
     var repo: any MarvelRepositoryProtocol
-    
+
     init(repo: any MarvelRepositoryProtocol = MarvelRepository(networkMarvel: NetworkMarvel())) {
         self.repo = repo
     }
-    
+
     func getCharacters() async -> [MarvelCharacterResult] {
-        return await repo.getCharacters()
+        await repo.getCharacters()
     }
-    
-    func getSeries(for characterId: Int) async -> [MarvelSeriesItem] {
-        return await repo.getSeries(for: characterId)
+
+    // Fetches FULL series info for a character (not just the item summary)
+    func getFullSeries(for characterId: Int) async -> [MarvelFullSeries] {
+        await repo.getFullSeries(for: characterId)
     }
 }
 
-// MarvelUseCaseMock
+// MARK: - Mock
 
 final class MarvelUseCaseMock: MarvelUseCaseProtocol {
     var repo: any MarvelRepositoryProtocol
-    
+
     init(repo: any MarvelRepositoryProtocol = MarvelRepositoryMock()) {
         self.repo = repo
     }
-    
+
     func getCharacters() async -> [MarvelCharacterResult] {
-        return await repo.getCharacters()
+        await repo.getCharacters()
     }
-    
-    func getSeries(for characterId: Int) async -> [MarvelSeriesItem] {
-        return await repo.getSeries(for: characterId)
+
+    // Returns mock full series list for previews/tests
+    func getFullSeries(for characterId: Int) async -> [MarvelFullSeries] {
+        await repo.getFullSeries(for: characterId)
     }
 }

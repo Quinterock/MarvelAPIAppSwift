@@ -17,7 +17,7 @@ protocol NetworkMarvelProtocol {
     // Get Marvel series, (we need the character id)
     // This func returns all the series from an specific character using  /characters/{id}/series  endpoint
     //working example: https://gateway.marvel.com/v1/public/characters/1009610/series
-    func getSeries(for characterId: Int) async -> [MarvelSeriesItem]
+    func getFullSeries(for characterId: Int) async -> [MarvelFullSeries]
 }
 
 final class NetworkMarvel: NetworkMarvelProtocol {
@@ -70,8 +70,8 @@ final class NetworkMarvel: NetworkMarvelProtocol {
     }
     
     // Get series for an specific character
-    func getSeries(for characterId: Int) async -> [MarvelSeriesItem] {
-        var series = [MarvelSeriesItem]()
+    func getFullSeries(for characterId: Int) async -> [MarvelFullSeries] {
+        var series = [MarvelFullSeries]()
         
         // Series URL
         let urlCad = "\(ConstantsApp.CONST_MARVEL_API_URL)\(Endpoints.characterSeries(characterId: characterId).path)?apikey=\(ConstantsApp.CONST_PUBLIC_KEY)&ts=\(ConstantsApp.CONST_TS)&hash=\(ConstantsApp.CONST_HASH)"
@@ -102,13 +102,10 @@ final class NetworkMarvel: NetworkMarvelProtocol {
                     dateFormatter.locale = Locale(identifier: "en_US_POSIX")
                     decodedResponse.dateDecodingStrategy = .formatted(dateFormatter)
                     
-                    let decoded = try decodedResponse.decode(Characters.self, from: data)
+                    let decoded = try decodedResponse.decode(SeriesResponse.self, from: data)
                     // Return the data
                     // We can use compact in case there are nulls as it removes them, is like map + filter
-                    series = decoded.data.results.map { result in
-                        // For each character, we create a MarvelSeriesItem from its thumbnail.path and its name
-                        MarvelSeriesItem(resourceURI: result.thumbnail.path, name: result.name)
-                    }
+                    series = decoded.data.results
                 } else {
                     NSLog("Error en la petición: Series Response")
                 }
@@ -135,75 +132,91 @@ final class NetworkMarvelMock: NetworkMarvelProtocol {
                 available: 2,
                 collectionURI: "https://gateway.marvel.com/v1/public/characters/1/series",
                 items: [
-                            MarvelSeriesItem(
-                                resourceURI: "https://gateway.marvel.com/v1/public/series/1001",
-                                name: "The Amazing Spider-Man"
-                            ),
-                            MarvelSeriesItem(
-                                resourceURI: "https://gateway.marvel.com/v1/public/series/1002",
-                                name: "Ultimate Spider-Man"
-                            )
-                        ],
+                    MarvelSeriesItem(
+                        resourceURI: "https://gateway.marvel.com/v1/public/series/1001",
+                        name: "The Amazing Spider-Man"
+                    ),
+                    MarvelSeriesItem(
+                        resourceURI: "https://gateway.marvel.com/v1/public/series/1002",
+                        name: "Ultimate Spider-Man"
+                    )
+                ],
                 returned: 2)
         ) // Spiderman
         
         let ironman = MarvelCharacterResult(
-                    id: 2,
-                    name: "Iron Man",
-                    description: "El genio, millonario, playboy y filántropo",
-                    modified: Date(),
-                    thumbnail: MarvelThumbnail(
-                        path: "https://i.annihil.us/u/prod/marvel/i/mg/3/20/5232158de5b16",
-                        thumbnailExtension: .jpg
+            id: 2,
+            name: "Iron Man",
+            description: "El genio, millonario, playboy y filántropo",
+            modified: Date(),
+            thumbnail: MarvelThumbnail(
+                path: "https://i.annihil.us/u/prod/marvel/i/mg/3/20/5232158de5b16",
+                thumbnailExtension: .jpg
+            ),
+            series: MarvelSeries(
+                available: 2,
+                collectionURI: "https://gateway.marvel.com/v1/public/characters/2/series",
+                items: [
+                    MarvelSeriesItem(
+                        resourceURI: "https://gateway.marvel.com/v1/public/series/2001",
+                        name: "Iron Man: Extremis"
                     ),
-                    series: MarvelSeries(
-                        available: 2,
-                        collectionURI: "https://gateway.marvel.com/v1/public/characters/2/series",
-                        items: [
-                            MarvelSeriesItem(
-                                resourceURI: "https://gateway.marvel.com/v1/public/series/2001",
-                                name: "Iron Man: Extremis"
-                            ),
-                            MarvelSeriesItem(
-                                resourceURI: "https://gateway.marvel.com/v1/public/series/2002",
-                                name: "Iron Man: Armor Wars"
-                            )
-                        ],
-                        returned: 2
+                    MarvelSeriesItem(
+                        resourceURI: "https://gateway.marvel.com/v1/public/series/2002",
+                        name: "Iron Man: Armor Wars"
                     )
-                ) // Iron Man
-                
-                return [spiderman, ironman]
+                ],
+                returned: 2
+            )
+        ) // Iron Man
+        
+        return [spiderman, ironman]
     } // Get Characters
     
-    func getSeries(for characterId: Int) async -> [MarvelSeriesItem] {
+    func getFullSeries(for characterId: Int) async -> [MarvelFullSeries] {
         // Returns series from the mocked character
         switch characterId {
-        case 1: // Spiderman
+        case 1: // Spider-Man
             return [
-                MarvelSeriesItem(
-                    resourceURI: "https://gateway.marvel.com/v1/public/series/1001",
-                    name: "The Amazing Spider-Man"
+                MarvelFullSeries(
+                    id: 1001,
+                    title: "The Amazing Spider-Man",
+                    description: "Peter Parker balances his life as an ordinary high school student in Queens with his superhero alter-ego Spider-Man.",
+                    startYear: 1963,
+                    endYear: 2012,
+                    thumbnail: MarvelThumbnail(path: "https://i.annihil.us/u/prod/marvel/i/mg/3/50/526548a343e4b", thumbnailExtension: .jpg)
                 ),
-                MarvelSeriesItem(
-                    resourceURI: "https://gateway.marvel.com/v1/public/series/1002",
-                    name: "Ultimate Spider-Man"
+                MarvelFullSeries(
+                    id: 1002,
+                    title: "Ultimate Spider-Man",
+                    description: "A modern take on Spider-Man for a new generation.",
+                    startYear: 2000,
+                    endYear: 2011,
+                    thumbnail: MarvelThumbnail(path: "https://i.annihil.us/u/prod/marvel/i/mg/6/30/526547e2d90ad", thumbnailExtension: .jpg)
                 )
             ]
         case 2: // Iron Man
             return [
-                MarvelSeriesItem(
-                    resourceURI: "https://gateway.marvel.com/v1/public/series/2001",
-                    name: "Iron Man: Extremis"
+                MarvelFullSeries(
+                    id: 2001,
+                    title: "Iron Man: Extremis",
+                    description: "A classic Iron Man storyline.",
+                    startYear: 2005,
+                    endYear: 2006,
+                    thumbnail: MarvelThumbnail(path: "https://i.annihil.us/u/prod/marvel/i/mg/1/03/526547f509313", thumbnailExtension: .jpg)
                 ),
-                MarvelSeriesItem(
-                    resourceURI: "https://gateway.marvel.com/v1/public/series/2002",
-                    name: "Iron Man: Armor Wars"
+                MarvelFullSeries(
+                    id: 2002,
+                    title: "Iron Man: Armor Wars",
+                    description: "Tony Stark faces a technological crisis.",
+                    startYear: 1987,
+                    endYear: 1988,
+                    thumbnail: MarvelThumbnail(path: "https://i.annihil.us/u/prod/marvel/i/mg/7/10/5265488f82f85", thumbnailExtension: .jpg)
                 )
             ]
         default:
             return []
-        } // character id switch
+        }
     }
 }
 
