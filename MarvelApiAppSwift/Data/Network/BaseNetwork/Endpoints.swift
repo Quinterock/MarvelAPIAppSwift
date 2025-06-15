@@ -19,7 +19,7 @@ enum Endpoints {
         case .characters:
             return "/v1/public/characters"
         case .characterSeries(let characterId):
-            // working example: https://gateway.marvel.com/v1/public/characters/1009610/series
+            // working example: https://gateway.marvel.com/v1/public/characters + /1009610/series
             return "/v1/public/characters/\(characterId)/series"
         }
     }

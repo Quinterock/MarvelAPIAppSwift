@@ -40,5 +40,4 @@ final class MarvelRepositoryMock: MarvelRepositoryProtocol {
     func getFullSeries(for characterId: Int) async -> [MarvelFullSeries] {
         return await network.getFullSeries(for: characterId)
     }
-
 }

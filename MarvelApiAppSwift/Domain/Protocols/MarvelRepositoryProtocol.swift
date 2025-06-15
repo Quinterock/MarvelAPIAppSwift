@@ -5,6 +5,7 @@
 //  Created by Luis Quintero on 07/06/25.
 //
 
+// What needs to be done? It needs
 protocol MarvelRepositoryProtocol {
     // Get Marvel Characters
     func getCharacters() async -> [MarvelCharacterResult]

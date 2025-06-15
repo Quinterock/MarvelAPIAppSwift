@@ -11,12 +11,12 @@ protocol NetworkMarvelProtocol {
     // getCharacters() returns [MarvelCharacterResult] which has character data and the series array
     
     // Get Marvel Characters
-    //example: https://gateway.marvel.com/v1/public/characters
+    //example: gateway.marvel.com/v1/public/characters
     func getCharacters() async -> [MarvelCharacterResult]
     
     // Get Marvel series, (we need the character id)
     // This func returns all the series from an specific character using  /characters/{id}/series  endpoint
-    //working example: https://gateway.marvel.com/v1/public/characters/1009610/series
+    //working example: gateway.marvel.com/v1/public/characters/1009610/series
     func getFullSeries(for characterId: Int) async -> [MarvelFullSeries]
 }
 
@@ -192,7 +192,7 @@ final class NetworkMarvelMock: NetworkMarvelProtocol {
                     description: "A modern take on Spider-Man for a new generation.",
                     startYear: 2000,
                     endYear: 2011,
-                    thumbnail: MarvelThumbnail(path: "https://i.annihil.us/u/prod/marvel/i/mg/6/30/526547e2d90ad", thumbnailExtension: .jpg)
+                    thumbnail: MarvelThumbnail(path: "https://i.annihil.us/u/prod/marvel/i/mg/3/50/526548a343e4b", thumbnailExtension: .jpg)
                 )
             ]
         case 2: // Iron Man
