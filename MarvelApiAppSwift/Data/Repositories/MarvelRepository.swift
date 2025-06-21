@@ -8,7 +8,7 @@
 import Foundation
 
 final class MarvelRepository: MarvelRepositoryProtocol {
-    
+    // TODO: Why not any
     private let networkMarvel: NetworkMarvelProtocol
     
     init(networkMarvel: NetworkMarvelProtocol = NetworkMarvel()) {

@@ -24,17 +24,17 @@ struct CharactersRowView: View {
                         .frame(width: 320, height: 320)
                         .clipShape(RoundedRectangle(cornerRadius: 12))
                 case .failure(let _):
-                    Image(systemName: "person")
+                    Image("marvel_heroes")
                         .resizable()
                         .scaledToFit()
-                        .frame(width: 100, height: 100)
+                        .frame(width: 320, height: 320)
                         .foregroundStyle(.red)
                 @unknown default:
-                    Image(systemName: "person.crop.square")
+                    Image("marvel_heroes")
                         .resizable()
                         .scaledToFit()
-                        .frame(width: 100, height: 100)
-                        .foregroundColor(.gray)
+                        .frame(width: 320, height: 320)
+                        .foregroundStyle(.red)
                 } // switch
             } // AsyncImage
             Text(character.name)
@@ -49,10 +49,7 @@ struct CharactersRowView: View {
     
 }
 
-
-
-
-// Extension to get the image URL, (shorten code)
+// Extension to get the image URL
 extension MarvelCharacterResult {
     static let mock: MarvelCharacterResult = MarvelCharacterResult(
             id: 1,

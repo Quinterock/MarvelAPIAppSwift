@@ -8,6 +8,7 @@
 import Foundation
 
 protocol MarvelUseCaseProtocol {
+    // Specify { get set } in protocols to have conforming types to provide a setter
     var repo: MarvelRepositoryProtocol { get set }
     
     func getCharacters() async -> [MarvelCharacterResult]
