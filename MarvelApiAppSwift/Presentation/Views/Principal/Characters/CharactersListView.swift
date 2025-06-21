@@ -29,32 +29,64 @@ struct CharactersListView: View {
                     }
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
                 } else {
-                    ScrollView {
-                        LazyVStack(spacing: 24) {
-                            ForEach(viewModel.characters) { character in
-                                CharactersRowView(character: character)
-                                    .onTapGesture {
-                                        activeCharacter = character
-                                        viewModel.selectCharacter(character)
+                    ScrollViewReader { proxy in
+                        
+                        ZStack {
+                            ScrollView {
+                                LazyVStack(spacing: 24) {
+                                    ForEach(viewModel.characters) { character in
+                                        CharactersRowView(character: character)
+                                            .onTapGesture {
+                                                activeCharacter = character
+                                                viewModel.selectCharacter(character)
+                                            }
                                     }
+                                }
+                                .padding()
+                                
+                            } // ScrollView HerosList
+                            VStack {
+                                Spacer()
+                                HStack {
+                                    Spacer()
+                                    Button {
+                                        withAnimation {
+                                            // Scroll to the last item
+                                            if let last = viewModel.characters.last {
+                                                proxy.scrollTo(last.id, anchor: .bottom)
+                                            }
+                                        }
+                                    } label: {
+                                        Image(systemName: "arrow.down")
+                                            .font(.system(size: 24))
+                                            .foregroundColor(.white)
+                                            .padding()
+                                            .background(Color.blue)
+                                            .clipShape(Circle())
+                                            .shadow(radius: 4)
+                                            .padding()
+                                    }
+                                } // HStack
                             }
-                        }
-                        .padding()
-                    }
-                }
+                        } // ZStack
+                    } // ScrollViewReader
+                } // else
             } // Group
             .navigationTitle("Marvel Characters")
             // Programmatic destination using a binding
             .navigationDestination(item: $activeCharacter) { character in
                 SeriesListScreen(viewModel: viewModel, character: character)
             }
-        }
+            
+            
+            
+        } // NavigationStack
         .task {
             if viewModel.characters.isEmpty {
                 await viewModel.fetchCharacters()
             }
         }
-    }
+    } // View
 }
 
 struct SeriesListScreen: View {
