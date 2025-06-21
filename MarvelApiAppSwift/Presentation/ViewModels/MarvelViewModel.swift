@@ -58,7 +58,7 @@ final class MarvelViewModel: ObservableObject {
 
         let result = await useCase.getFullSeries(for: characterId)
         if result.isEmpty {
-            errorSeries = "No se encontraron series para este personaje"
+            errorSeries = "Este personaje no contiene series."
         }
         self.series = result
     }

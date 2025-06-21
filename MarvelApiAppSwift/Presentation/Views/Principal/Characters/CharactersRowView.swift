@@ -37,24 +37,26 @@ struct CharactersRowView: View {
                         .foregroundStyle(.red)
                 } // switch
             } // AsyncImage
+            // Hero name
             Text(character.name)
-                .font(.headline)
-                .frame(width: 100)
+                .font(.system(size: 20))
+                .fontWeight(.semibold)
+                .frame(width: 240)
+                
         } // VStack
         .padding()
         .background(Color(.systemBackground))
         .cornerRadius(24)
-        .shadow(radius: 8)
+        .shadow(radius: 10)
     } // View
-    
 }
 
 // Extension to get the image URL
 extension MarvelCharacterResult {
     static let mock: MarvelCharacterResult = MarvelCharacterResult(
             id: 1,
-            name: "Spider-Man",
-            description: "Friendly neighborhood Spider-Man.",
+            name: "A-Bomb",
+            description: "A-Bomb",
             modified: Date(),
             thumbnail: MarvelThumbnail(
                 path: "https://i.annihil.us/u/prod/marvel/i/mg/3/20/5232158de5b16",

@@ -13,7 +13,7 @@ struct CharactersListView: View {
     // For programmatic navigation
     @State private var activeCharacter: MarvelCharacterResult?
 
-    var body: some View {
+    var body: some View { 
         NavigationStack {
             Group {
                 if viewModel.isLoadingCharacters {
@@ -30,7 +30,7 @@ struct CharactersListView: View {
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
                 } else {
                     ScrollView {
-                        LazyVStack(spacing: 16) {
+                        LazyVStack(spacing: 24) {
                             ForEach(viewModel.characters) { character in
                                 CharactersRowView(character: character)
                                     .onTapGesture {
@@ -42,7 +42,7 @@ struct CharactersListView: View {
                         .padding()
                     }
                 }
-            }
+            } // Group
             .navigationTitle("Marvel Characters")
             // Programmatic destination using a binding
             .navigationDestination(item: $activeCharacter) { character in
@@ -69,6 +69,9 @@ struct SeriesListScreen: View {
                 VStack(spacing: 16) {
                     Text("Error: \(error)")
                         .foregroundColor(.red)
+                        .frame(width: 280)
+                    Spacer()
+                        .frame(height: 24)
                     Button("Retry") {
                         Task { await viewModel.fetchSeries(for: character.id) }
                     }
@@ -81,6 +84,7 @@ struct SeriesListScreen: View {
         .onAppear {
             // Only fetch if needed
             if viewModel.series.isEmpty || viewModel.selectedCharacter?.id != character.id {
+                // If Hero has not Series
                 viewModel.selectCharacter(character)
             }
         }
