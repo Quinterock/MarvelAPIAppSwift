@@ -13,14 +13,18 @@ final class MarvelViewModel: ObservableObject {
 
     // Characters list from Model
     @Published var characters: [MarvelCharacterResult] = []
+    // Used for ProgressView in CharactersListView
     @Published var isLoadingCharacters: Bool = false
     @Published var errorCharacters: String?
 
     // Selected character and its series
     @Published var selectedCharacter: MarvelCharacterResult?
     @Published var series: [MarvelFullSeries] = []
+    // Used for ProgressView in SeriesListView
     @Published var isLoadingSeries: Bool = false
     @Published var errorSeries: String?
+    
+    @Published var selectedSerie: MarvelFullSeries?
 
     // Dependencies
     private let useCase: MarvelUseCaseProtocol
@@ -61,6 +65,14 @@ final class MarvelViewModel: ObservableObject {
             errorSeries = "Este personaje no contiene series."
         }
         self.series = result
+    }
+    
+    // Select a serie and fetch its details
+    func fetchSerieDetail(_ serie: MarvelFullSeries) {
+        self.selectedSerie = serie
+        Task {
+            await fetchSeries(for: serie.id)
+        }
     }
 
     // Used when closing a character or series view to clear selection

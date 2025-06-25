@@ -68,7 +68,7 @@ struct SeriesData: Codable {
 }
 
 // Uses Identifiable because is required for SwiftUI List and other UI elements to know how to uniquely identify each item using id.
-struct MarvelFullSeries: Codable, Identifiable {
+struct MarvelFullSeries: Codable, Identifiable, Hashable {
     let id: Int
     let title: String
     let description: String?

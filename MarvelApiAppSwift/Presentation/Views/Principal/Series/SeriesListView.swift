@@ -9,12 +9,20 @@ import SwiftUI
 
 struct SeriesListView: View {
     let series: [MarvelFullSeries]
+    @ObservedObject var viewModel: MarvelViewModel
+    @State private var selectedSerie: MarvelFullSeries?
 
     var body: some View {
         List(series) { serie in
             SeriesRowView(series: serie)
+                .onTapGesture {
+                    selectedSerie = serie
+                }
         }
         .listStyle(.plain)
+        .navigationDestination(item: $selectedSerie) { serie in
+            SeriesDetailView(series: serie)
+        }
         .navigationTitle("Series")
     }
 }
@@ -36,7 +44,7 @@ struct SeriesListView: View {
                     thumbnailExtension: .jpg
                 )
             )
-        ])
+        ], viewModel: MarvelViewModel())
     }
 }
 

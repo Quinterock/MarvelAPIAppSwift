@@ -18,7 +18,7 @@ struct CharactersListView: View {
             Group {
                 if viewModel.isLoadingCharacters {
                     ProgressView("Loading characters...")
-                        .frame(maxWidth: 1, maxHeight: 20)
+                        .frame(maxWidth: 1, maxHeight: 15)
                 } else if let error = viewModel.errorCharacters {
                     VStack(spacing: 16) {
                         Text("Error: \(error)")
@@ -59,11 +59,11 @@ struct CharactersListView: View {
                                     } label: {
                                         Image(systemName: "arrow.down")
                                             .font(.system(size: 24))
-                                            .foregroundColor(.white)
+                                            .foregroundColor(.black)
                                             .padding()
-                                            .background(Color.blue)
+                                            .background(Color.white)
                                             .clipShape(Circle())
-                                            .shadow(radius: 4)
+                                            .shadow(radius: 8)
                                             .padding()
                                     }
                                 } // HStack
@@ -109,7 +109,8 @@ struct SeriesListScreen: View {
                     }
                 }
             } else {
-                SeriesListView(series: viewModel.series)
+                // SeriesListView Call
+                SeriesListView(series: viewModel.series, viewModel: viewModel)
             }
         }
         .navigationTitle(character.name)
